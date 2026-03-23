@@ -5,11 +5,16 @@ export default function DrawingPad() {
   const canvasRef = useRef(null)
   const fabricRef = useRef(null)
   const [brushColor, setBrushColor] = useState('black');
-  function handleColor(e) {
-    setBrushColor(e.target.value);
-  }
   const [activeMode, setActiveMode] = useState('draw');
   const [brushSize, setBrushSize] = useState(10); 
+  
+  
+  function handleSize(e) {
+    setBrushSize(Number(e.target.value));
+  }
+   function handleColor(e) {
+    setBrushColor(e.target.value);
+  }
 
   useEffect(() => {
     // Initialize Fabric canvas
@@ -33,14 +38,38 @@ export default function DrawingPad() {
 
   useEffect(() => {
     if (!fabricRef.current) return
-    fabricRef.current.freeDrawingBrush.color = brushColor
+
+     if (activeMode === 'draw') {
+      fabricRef.current.freeDrawingBrush = new fabric.PencilBrush(fabricRef.current)
+      fabricRef.current.freeDrawingBrush.color = brushColor
     fabricRef.current.freeDrawingBrush.width = brushSize
-  }, [brushColor, brushSize])
+    } else if (activeMode === 'erase') {
+       fabricRef.current.freeDrawingBrush = new fabric.PencilBrush(fabricRef.current);
+       fabricRef.current.freeDrawingBrush.color = 'white';
+       fabricRef.current.freeDrawingBrush.width = 25;
+    }
+
+    
+
+   
+
+  }, [brushColor, brushSize, activeMode])
 
   return (
     <div>
       <canvas ref={canvasRef} />
       <input type="color" onChange={handleColor} />
+      <input type="range" min="1" max="50" onChange={handleSize} />
+      <input type="radio" 
+      onChange={() => setActiveMode('draw')} 
+      checked = {activeMode === 'draw'}/>
+
+      <input type="radio" 
+      onChange={() => setActiveMode('erase')} 
+      checked = {activeMode === 'erase'}/>
+
+
+
     </div>
   )
 }
