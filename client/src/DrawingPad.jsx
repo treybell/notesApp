@@ -4,6 +4,7 @@ import * as fabric from 'fabric'
 export default function DrawingPad() {
   const canvasRef = useRef(null)
   const fabricRef = useRef(null)
+  const wsRef = useRef(null)
   const [brushColor, setBrushColor] = useState('black');
   const [activeMode, setActiveMode] = useState('draw');
   const [brushSize, setBrushSize] = useState(10); 
@@ -33,7 +34,20 @@ export default function DrawingPad() {
     canvas.freeDrawingBrush = new fabric.PencilBrush(canvas)
     canvas.freeDrawingBrush.color = brushColor
     canvas.freeDrawingBrush.width = brushSize
+    wsRef.current = new WebSocket('ws://localhost:3000')
+
+    canvas.on('path:created', (e) => { wsRef.current.send(JSON.stringify(e))})
+    wsRef.current.onmessage = (e) => {
+      
+      const data = JSON.parse(e.data);
+      const pathData = data.path;
+      console.log(pathData);
+      canvas.add(new fabric.Path(pathData.path, pathData));
+    };
+    
     return () => canvas.dispose()
+
+    
   }, [])
 
   useEffect(() => {
