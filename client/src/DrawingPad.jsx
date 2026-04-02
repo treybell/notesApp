@@ -38,13 +38,20 @@ export default function DrawingPad() {
 
     canvas.on('path:created', (e) => { wsRef.current.send(JSON.stringify(e))})
     wsRef.current.onmessage = (e) => {
-      
       const data = JSON.parse(e.data);
+      if (data.path_data) {
+        canvas.add(new fabric.Path(data.path_data.path, data.path_data));
+      } else {
+      //const data = JSON.parse(e.data);
       const pathData = data.path;
       console.log(pathData);
+    //  console.log('adding path');
       canvas.add(new fabric.Path(pathData.path, pathData));
+      
+      console.log(e.data.path);
+      }
     };
-    
+  
     return () => canvas.dispose()
 
     
