@@ -111,3 +111,113 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* ── Toolbar ─────────────────────────────────────────── */
+:root {
+  --toolbar-bg: #1a1b22;
+  --toolbar-border: #2e303a;
+  --toolbar-text: #c9cad4;
+  --toolbar-btn-hover: #2a2b35;
+  --toolbar-btn-active-bg: #aa3bff;
+  --toolbar-btn-active-text: #fff;
+  --toolbar-divider: #2e303a;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --toolbar-bg: #1e1f28;
+    --toolbar-border: #2e303a;
+    --toolbar-text: #c9cad4;
+    --toolbar-btn-hover: #2a2b35;
+    --toolbar-btn-active-bg: #aa3bff;
+    --toolbar-btn-active-text: #fff;
+    --toolbar-divider: #3a3c48;
+  }
+}
+
+.drawing-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--toolbar-bg);
+  border: 1px solid var(--toolbar-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 8px 12px;
+  width: 1124px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--toolbar-divider);
+  margin: 0 8px;
+}
+
+.toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--toolbar-text);
+  font: 13px/1 var(--sans);
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.toolbar-btn:hover {
+  background: var(--toolbar-btn-hover);
+  color: #fff;
+}
+
+.toolbar-btn.active {
+  background: var(--toolbar-btn-active-bg);
+  color: var(--toolbar-btn-active-text);
+  border-color: transparent;
+}
+
+.toolbar-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--toolbar-text);
+  font: 12px/1 var(--sans);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  cursor: default;
+  padding: 0 4px;
+}
+
+.color-picker {
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--toolbar-border);
+  background: var(--toolbar-btn-hover);
+  cursor: pointer;
+}
+
+.size-slider {
+  width: 100px;
+  accent-color: var(--toolbar-btn-active-bg);
+  cursor: pointer;
+}
