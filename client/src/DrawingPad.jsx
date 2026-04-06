@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as fabric from 'fabric'
+import { useNavigate } from 'react-router-dom'
 
 export default function DrawingPad() {
   const canvasRef = useRef(null)
@@ -20,7 +21,7 @@ export default function DrawingPad() {
   useEffect(() => {
     // Initialize Fabric canvas
     const canvas = new fabric.Canvas(canvasRef.current, {
-      width: 1124,
+      width: 1500,
       height: 1000,
       backgroundColor: 'white'
     })
@@ -76,8 +77,10 @@ export default function DrawingPad() {
 
   }, [brushColor, brushSize, activeMode])
 
+  const navigate = useNavigate();
   return (
     <div className="drawing-wrapper">
+      <button onClick={() => navigate('/')}>Home</button>
       <div className="toolbar">
         <div className="toolbar-group">
           <button
