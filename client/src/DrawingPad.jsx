@@ -40,12 +40,17 @@ export default function DrawingPad() {
     canvas.on('path:created', (e) => { wsRef.current.send(JSON.stringify(e))})
     wsRef.current.onmessage = (e) => {
       const data = JSON.parse(e.data);
+
+      //need to fix bug where it clears every connections canvas(canvasID)
+      if (data.type === 'clear:canvas') {
+        fabricRef.current.getObjects().forEach(obj => fabricRef.current.remove(obj));
+      } else  
       if (data.path_data) {
         canvas.add(new fabric.Path(data.path_data.path, data.path_data));
       } else {
       //const data = JSON.parse(e.data);
       const pathData = data.path;
-      console.log(pathData);
+     // console.log(pathData);
     //  console.log('adding path');
       canvas.add(new fabric.Path(pathData.path, pathData));
       
@@ -57,6 +62,11 @@ export default function DrawingPad() {
 
     
   }, [])
+
+  function clearBoard() {
+    
+    wsRef.current.send(JSON.stringify({type: 'clear:canvas', canvasID: 1}))
+  }
 
   useEffect(() => {
     if (!fabricRef.current) return
@@ -83,6 +93,8 @@ export default function DrawingPad() {
       <button onClick={() => navigate('/')}>Home</button>
       <div className="toolbar">
         <div className="toolbar-group">
+          <button onClick={() => clearBoard() }
+          >Clear</button>
           <button
             className={`toolbar-btn${activeMode === 'draw' ? ' active' : ''}`}
             onClick={() => setActiveMode('draw')}

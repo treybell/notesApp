@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 
 :root {
   --text: #6b6375;
@@ -19,7 +20,7 @@
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -114,25 +115,13 @@ code {
 
 /* ── Toolbar ─────────────────────────────────────────── */
 :root {
-  --toolbar-bg: #1a1b22;
-  --toolbar-border: #2e303a;
-  --toolbar-text: #c9cad4;
-  --toolbar-btn-hover: #2a2b35;
-  --toolbar-btn-active-bg: #aa3bff;
+  --toolbar-bg: #ffffff;
+  --toolbar-border: #e0e0e0;
+  --toolbar-text: #333333;
+  --toolbar-btn-hover: #f0f0f0;
+  --toolbar-btn-active-bg: #000000;
   --toolbar-btn-active-text: #fff;
-  --toolbar-divider: #2e303a;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --toolbar-bg: #1e1f28;
-    --toolbar-border: #2e303a;
-    --toolbar-text: #c9cad4;
-    --toolbar-btn-hover: #2a2b35;
-    --toolbar-btn-active-bg: #aa3bff;
-    --toolbar-btn-active-text: #fff;
-    --toolbar-divider: #3a3c48;
-  }
+  --toolbar-divider: #e0e0e0;
 }
 
 .drawing-wrapper {
