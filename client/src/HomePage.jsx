@@ -24,7 +24,7 @@ export default function HomePage() {
 
         <div className="flex gap-4 mt-2">
           <button
-            onClick={() => navigate("/canvas")}
+            onClick={() => navigate(`/canvas/${crypto.randomUUID()}`)}
             className="px-6 py-3 rounded-xl bg-black hover:bg-black/80 text-white font-semibold transition-colors"
           >
             Open Canvas
@@ -89,7 +89,7 @@ export default function HomePage() {
             <p className="text-black/50 text-sm mt-1">Jump straight onto the canvas — no account needed.</p>
           </div>
           <button
-            onClick={() => navigate("/canvas")}
+            onClick={() => navigate(`/canvas/${crypto.randomUUID()}`)}
             className="shrink-0 px-6 py-3 rounded-xl bg-black hover:bg-black/80 text-white font-semibold transition-colors"
           >
             Go to Canvas →

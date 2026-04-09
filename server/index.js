@@ -17,31 +17,60 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', async ws => {
     console.log('Client connected');
-
-    const {data, error} = await supabase
-    .from('strokes')
-    .select('path_data')
-    data.forEach(item => ws.send(JSON.stringify(item)));
-    console.log(data, error)
   
 
     ws.on('message', async message => {
-        // Broadcast the message to all connected clients
+       const obj = JSON.parse(message)
+
+       if (obj.type === 'register:canvas') {
+  const { data, error } = await supabase
+    .from('strokes')
+    .select('path_data')
+    .eq('canvas_id', obj.canvasID)
+  
+  data.forEach(item => ws.send(JSON.stringify(item)))
+} else {
+
+
+       if (obj.type == 'clear:canvas') {
+        const { errorr } = await supabase
+        .from('strokes')
+        .delete()
+        .eq('canvas_id', obj.canvasID)
+        console.log('55555')
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(message.toString()); // Convert buffer to string if needed
             }
-            
+          
         });
+       } else {
 
-        const obj = JSON.parse(message)
+
+        // Broadcast the message to all connected clients
+       wss.clients.forEach(client => {
+  if (client !== ws && client.readyState === WebSocket.OPEN) {
+    client.send(message.toString())
+  }
+});
+      
+
+       
         const {data, error} = await supabase
         .from('strokes')
-        .insert ({canvas_id: 1, path_data: obj.path})
-        console.log(data, error)
+        .insert ({canvas_id: obj.canvasID, path_data: obj.path})
+       
+       // console.log(obj.canvasID)
         
+        console.log(data, error)
+
+        
+        console.log(obj.type);
+      }
+      }
       });
 
+    
     ws.on('close', () => {
         console.log('Client disconnected');
     });
@@ -50,7 +79,7 @@ wss.on('connection', async ws => {
         console.error('WebSocket error:', error);
     });
 
-    ws.send('Welcome to the WebSocket server!');
+    
 });
 
 console.log('WebSocket server is running on ws://localhost:8080');

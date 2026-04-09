@@ -14,7 +14,7 @@ export default function App() {
    
     <Routes>
       <Route path="/" element={<HomePage> </HomePage>}/>
-      <Route path="/canvas" element={<DrawingPad> </DrawingPad>}/>
+      <Route path="/canvas/:canvasId" element={<DrawingPad> </DrawingPad>}/>
 
     </Routes>
     </BrowserRouter>

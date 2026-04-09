@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as fabric from 'fabric'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function DrawingPad() {
   const canvasRef = useRef(null)
@@ -8,7 +8,9 @@ export default function DrawingPad() {
   const wsRef = useRef(null)
   const [brushColor, setBrushColor] = useState('black');
   const [activeMode, setActiveMode] = useState('draw');
-  const [brushSize, setBrushSize] = useState(10); 
+  const [brushSize, setBrushSize] = useState(10);
+  const { canvasId } = useParams();
+  
   
   
   function handleSize(e) {
@@ -19,11 +21,13 @@ export default function DrawingPad() {
   }
 
   useEffect(() => {
+    let cancelled = false
     // Initialize Fabric canvas
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: 1500,
       height: 1000,
       backgroundColor: 'white'
+      
     })
 
     canvas.renderAll()
@@ -37,7 +41,23 @@ export default function DrawingPad() {
     canvas.freeDrawingBrush.width = brushSize
     wsRef.current = new WebSocket('ws://localhost:3000')
 
-    canvas.on('path:created', (e) => { wsRef.current.send(JSON.stringify(e))})
+    wsRef.current.onopen = () => {
+      if (!cancelled) {
+        wsRef.current.send(JSON.stringify({ type: 'register:canvas', canvasID: canvasId }))
+      }
+    }
+
+    
+
+    canvas.on('path:created', (e) => { 
+      console.log('6767')
+      console.log(e.path)
+      //const obj = e.path
+      wsRef.current.send(JSON.stringify({path: e.path, canvasID: canvasId}))
+      console.log('6767')
+    })
+
+
     wsRef.current.onmessage = (e) => {
       const data = JSON.parse(e.data);
 
@@ -47,25 +67,34 @@ export default function DrawingPad() {
       } else  
       if (data.path_data) {
         canvas.add(new fabric.Path(data.path_data.path, data.path_data));
-      } else {
+      } else { //handles live drawings
       //const data = JSON.parse(e.data);
       const pathData = data.path;
      // console.log(pathData);
     //  console.log('adding path');
       canvas.add(new fabric.Path(pathData.path, pathData));
       
+      
       console.log(e.data.path);
+      
       }
     };
   
-    return () => canvas.dispose()
+    return () => {
+      cancelled = true
+      canvas.dispose()
+      wsRef.current.close()
+    }
 
     
   }, [])
 
+
+  
+
   function clearBoard() {
     
-    wsRef.current.send(JSON.stringify({type: 'clear:canvas', canvasID: 1}))
+    wsRef.current.send(JSON.stringify({type: 'clear:canvas', canvasID: canvasId}))
   }
 
   useEffect(() => {
