@@ -23,6 +23,11 @@ wss.on('connection', async ws => {
        const obj = JSON.parse(message)
 
        if (obj.type === 'register:canvas') {
+       const { data: upsertData, error: upsertError } = await supabase.from('canvases').upsert({ id: obj.canvasID, created_at: new Date() })
+      console.log('upsert result:', upsertData, upsertError)
+
+
+
   const { data, error } = await supabase
     .from('strokes')
     .select('path_data')
