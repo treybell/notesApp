@@ -11,6 +11,7 @@ const http = require('http');
 
 
 const app = express();
+app.use(cors())
 const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
@@ -102,6 +103,15 @@ console.log('WebSocket server is running on ws://localhost:8080');
 app.get('/', (req, res) => {
   res.json({ message: 'Hello from Express!' });
 });
+
+
+//called when fetching i react, it calls our expresss server and then the 
+//backend uerys the database and sends the JSON string to frontend
+app.get('/canvases', async (req, res) => {
+  const { data } = await supabase.from('canvases').select('*')
+  res.json(data)
+})
+
 
 
 server.listen(3000, () => {
