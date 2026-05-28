@@ -24,6 +24,7 @@ wss.on('connection', async ws => {
        const obj = JSON.parse(message)
 
        if (obj.type === 'register:canvas') {
+       ws.canvasId = obj.canvasID
        const { data: upsertData, error: upsertError } = await supabase.from('canvases').upsert({ id: obj.canvasID, created_at: new Date() })
       console.log('upsert result:', upsertData, upsertError)
 
@@ -45,10 +46,9 @@ wss.on('connection', async ws => {
         .eq('canvas_id', obj.canvasID)
         console.log('55555')
         wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(message.toString()); // Convert buffer to string if needed
+            if (client.readyState === WebSocket.OPEN && client.canvasId === obj.canvasID) {
+                client.send(message.toString());
             }
-          
         });
        } else {
 
@@ -108,7 +108,7 @@ app.get('/', (req, res) => {
 //called when fetching i react, it calls our expresss server and then the 
 //backend uerys the database and sends the JSON string to frontend
 app.get('/canvases', async (req, res) => {
-  const { data } = await supabase.from('canvases').select('*')
+  const { data } = await supabase.from('canvases').select('*').order('created_at', { ascending: false })
   res.json(data)
 })
 

@@ -115,19 +115,25 @@ code {
 
 /* ── Toolbar ─────────────────────────────────────────── */
 :root {
-  --toolbar-bg: #ffffff;
-  --toolbar-border: #e0e0e0;
-  --toolbar-text: #333333;
-  --toolbar-btn-hover: #f0f0f0;
-  --toolbar-btn-active-bg: #000000;
-  --toolbar-btn-active-text: #fff;
-  --toolbar-divider: #e0e0e0;
+  --toolbar-bg: #0c0c0e;
+  --toolbar-border: rgba(0,255,153,0.2);
+  --toolbar-text: rgba(255,255,255,0.6);
+  --toolbar-btn-hover: rgba(0,255,153,0.08);
+  --toolbar-btn-active-bg: rgba(0,255,153,0.12);
+  --toolbar-btn-active-text: #ffffff;
+  --toolbar-divider: rgba(0,255,153,0.15);
 }
 
 .drawing-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
+  background-color: #0c0c0e;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(255,255,255,0.03) 31px, rgba(255,255,255,0.03) 32px),
+    repeating-linear-gradient(90deg, transparent, transparent 31px, rgba(255,255,255,0.03) 31px, rgba(255,255,255,0.03) 32px);
+  padding: 16px;
 }
 
 .toolbar {
@@ -137,9 +143,9 @@ code {
   background: var(--toolbar-bg);
   border: 1px solid var(--toolbar-border);
   border-bottom: none;
-  border-radius: 8px 8px 0 0;
+  border-radius: 0;
   padding: 8px 12px;
-  width: 1124px;
+  width: 1500px;
   max-width: 100%;
   box-sizing: border-box;
 }
@@ -162,11 +168,12 @@ code {
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 0;
   border: 1px solid transparent;
   background: transparent;
   color: var(--toolbar-text);
-  font: 13px/1 var(--sans);
+  font-family: monospace;
+  font-size: 13px;
   letter-spacing: 0.2px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
@@ -174,13 +181,14 @@ code {
 
 .toolbar-btn:hover {
   background: var(--toolbar-btn-hover);
-  color: #fff;
+  color: #ffffff;
+  border-color: rgba(0,255,153,0.3);
 }
 
 .toolbar-btn.active {
   background: var(--toolbar-btn-active-bg);
   color: var(--toolbar-btn-active-text);
-  border-color: transparent;
+  border-color: rgba(0,255,153,0.4);
 }
 
 .toolbar-label {
@@ -188,7 +196,8 @@ code {
   align-items: center;
   gap: 8px;
   color: var(--toolbar-text);
-  font: 12px/1 var(--sans);
+  font-family: monospace;
+  font-size: 12px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   cursor: default;
@@ -199,14 +208,14 @@ code {
   width: 28px;
   height: 28px;
   padding: 2px;
-  border-radius: 6px;
+  border-radius: 0;
   border: 1px solid var(--toolbar-border);
-  background: var(--toolbar-btn-hover);
+  background: transparent;
   cursor: pointer;
 }
 
 .size-slider {
   width: 100px;
-  accent-color: var(--toolbar-btn-active-bg);
+  accent-color: #00ff99;
   cursor: pointer;
 }
