@@ -119,11 +119,29 @@ export default function DrawingPad() {
   const navigate = useNavigate();
   return (
     <div className="drawing-wrapper">
-      <button onClick={() => navigate('/')}>Home</button>
+      <div style={{ width: 1500, maxWidth: '100%', display: 'flex', alignItems: 'center', paddingBottom: 8 }}>
+        <button
+          onClick={() => navigate('/')}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: 'rgba(255,255,255,0.5)',
+            fontFamily: 'monospace',
+            fontSize: 13,
+            cursor: 'pointer',
+            letterSpacing: '0.05em',
+            padding: '4px 0',
+            transition: 'color 0.15s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+        >
+          ← home
+        </button>
+      </div>
       <div className="toolbar">
         <div className="toolbar-group">
-          <button onClick={() => clearBoard() }
-          >Clear</button>
+          <button onClick={() => clearBoard()} className="toolbar-btn">Clear</button>
           <button
             className={`toolbar-btn${activeMode === 'draw' ? ' active' : ''}`}
             onClick={() => setActiveMode('draw')}
