@@ -35,7 +35,7 @@ wss.on('connection', async ws => {
     .select('path_data')
     .eq('canvas_id', obj.canvasID)
   
-  data.forEach(item => ws.send(JSON.stringify(item)))
+  ;(data || []).forEach(item => ws.send(JSON.stringify(item)))
 } else {
 
 
